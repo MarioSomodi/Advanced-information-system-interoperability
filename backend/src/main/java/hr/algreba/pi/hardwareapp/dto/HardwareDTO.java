@@ -6,6 +6,7 @@ import hr.algreba.pi.hardwareapp.domain.Type;
 import java.math.BigDecimal;
 
 public class HardwareDTO {
+    private final Long id;
     private final String name;
     private final BigDecimal price;
     private final String code;
@@ -13,6 +14,7 @@ public class HardwareDTO {
     private final Long stock;
 
     public HardwareDTO(Hardware hardware) {
+        this.id = hardware.getId();
         this.name = hardware.getName();
         this.price = hardware.getPrice();
         this.code = hardware.getCode();
@@ -21,11 +23,16 @@ public class HardwareDTO {
     }
 
     public HardwareDTO(String code, Hardware hardware) {
+        this.id = hardware.getId();
         this.name = hardware.getName();
         this.price = hardware.getPrice();
         this.type = hardware.getType();
         this.stock = hardware.getStock();
         this.code = code;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Type getType() {
@@ -52,6 +59,7 @@ public class HardwareDTO {
     public String toString() {
         return "HardwareDTO{" +
                 "name='" + name + '\'' +
+                ", id=" + id +
                 ", price=" + price +
                 ", stock=" + stock +
                 ", type=" + type +

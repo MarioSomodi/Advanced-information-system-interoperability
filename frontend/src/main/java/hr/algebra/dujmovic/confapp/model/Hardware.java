@@ -16,7 +16,7 @@ public class Hardware {
     public Hardware() {
     }
 
-    public Hardware(Long id, String name, Type type, String code, long stock, BigDecimal price) {
+    public Hardware(Long id, String name, Type type, String code, Long stock, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -49,7 +49,7 @@ public class Hardware {
         return code;
     }
 
-    public long getStock() {
+    public Long getStock() {
         return stock;
     }
 

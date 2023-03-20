@@ -27,7 +27,11 @@ public class HelloController implements Initializable {
     @FXML
     private TextField hardwareCodeTextField;
     @FXML
+    private Label warningLabel;
+    @FXML
     private TextField hardwareNameTextField;
+    @FXML
+    private TextField hardwareIdTextField;
     @FXML
     private TextField hardwareStockTextField;
     @FXML
@@ -44,8 +48,11 @@ public class HelloController implements Initializable {
     private TableColumn<Hardware, Long> stockColumn;
     @FXML
     private TableColumn<Hardware, String> codeColumn;
+    @FXML
+    private TableColumn<Hardware, Long> idColumn;
 
     private <T> ResponseEntity<T> getResponseFromAPI(String restEndpointUrl, GenericClass<T> classToMap, HttpMethod method, Hardware... hardware) {
+        warningLabel.setText("");
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter =
                 new MappingJackson2HttpMessageConverter();
@@ -57,6 +64,7 @@ public class HelloController implements Initializable {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<T> hardwareArrayResponse = new ResponseEntity<T>(HttpStatus.OK);
         restTemplate.setMessageConverters(messageConverters);
+
         switch(method){
             case GET:{
                 hardwareArrayResponse = restTemplate.getForEntity(restEndpointUrl, classToMap.getMyType());
@@ -111,6 +119,26 @@ public class HelloController implements Initializable {
 
         hardwareTable.setItems(hardwareList);
     }
+    @FXML
+    protected void onGetByIDButtonClick() {
+        GenericClass<Hardware[]> classToMapTo = new GenericClass<Hardware[]>(Hardware[].class);
+        ResponseEntity<Hardware[]> apiResponse1 = getResponseFromAPI("http://localhost:8081/hardware", classToMapTo, HttpMethod.GET);
+
+        List<Hardware> hardwareObjects = Arrays.asList(apiResponse1.getBody());
+        GenericClass<Hardware> classToMapTo2 = new GenericClass<Hardware>(Hardware.class);
+       try {
+           ResponseEntity<Hardware> apiResponse2;
+           apiResponse2 = getResponseFromAPI("http://localhost:8081/hardware/" +
+                   hardwareObjects.stream().filter(hardware -> hardware.getId() == Long.parseLong(hardwareIdTextField.getText())).findFirst().orElse(null).getCode(), classToMapTo2, HttpMethod.GET);
+           ObservableList<Hardware> foundHardware = FXCollections.observableArrayList();
+           List<Hardware> foundHardwareObjects = Arrays.asList(apiResponse2.getBody());
+           foundHardware.addAll(foundHardwareObjects);
+
+           hardwareTable.setItems(foundHardware);
+       }catch(Exception e){
+           warningLabel.setText("Hardware with that ID does not exist");
+       }
+    }
 
     @FXML
     protected void onDeleteButtonClick() {
@@ -141,6 +169,7 @@ public class HelloController implements Initializable {
         Pattern charLimit = Pattern.compile(".{0,7}");
         TextFormatter charLimitFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> charLimit.matcher(change.getControlNewText()).matches() ? change : null);
         hardwareCodeTextField.setTextFormatter(charLimitFormatter);
+        idColumn.setCellValueFactory(new PropertyValueFactory<Hardware, Long>("id"));
         codeColumn.setCellValueFactory(new PropertyValueFactory<Hardware, String>("code"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Hardware, String>("name"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<Hardware, String>("price"));
