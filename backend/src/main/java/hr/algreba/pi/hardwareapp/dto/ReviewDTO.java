@@ -3,7 +3,6 @@ package hr.algreba.pi.hardwareapp.dto;
 import hr.algreba.pi.hardwareapp.domain.Review;
 
 public class ReviewDTO {
-
     private String title;
     private String text;
     private Long rating;

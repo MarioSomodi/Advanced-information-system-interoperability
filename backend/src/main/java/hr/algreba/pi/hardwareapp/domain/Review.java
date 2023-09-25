@@ -20,6 +20,7 @@ public class Review {
         this.title = reviewCommand.getTitle();
         this.text = reviewCommand.getText();
         this.rating = reviewCommand.getRating();
+        this.hardware = reviewCommand.getHardware();
     }
 
     public Review(ReviewUpdateCommand reviewCommand) {

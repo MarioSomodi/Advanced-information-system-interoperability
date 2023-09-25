@@ -1,5 +1,7 @@
 package hr.algreba.pi.hardwareapp.command;
 
+import hr.algreba.pi.hardwareapp.domain.Hardware;
+
 import javax.validation.constraints.*;
 import java.math.BigInteger;
 
@@ -17,13 +19,13 @@ public class ReviewCommand {
     private Long rating;
 
     @NotNull(message = "You need to provide the hardware id for this review")
-    private BigInteger hardwareID;
+    private Hardware hardware;
 
-    public ReviewCommand(String title, String text, Long rating, BigInteger hardwareID) {
+    public ReviewCommand(String title, String text, Long rating, Hardware hardware) {
         this.title = title;
         this.text = text;
         this.rating = rating;
-        this.hardwareID = hardwareID;
+        this.hardware = hardware;
     }
 
     public String getTitle() {
@@ -36,5 +38,8 @@ public class ReviewCommand {
 
     public Long getRating() {
         return rating;
+    }
+    public Hardware getHardware() {
+        return hardware;
     }
 }

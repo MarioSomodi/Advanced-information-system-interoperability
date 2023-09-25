@@ -40,8 +40,8 @@ public class HardwareController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public HardwareDTO save(@Valid @RequestBody final HardwareCommand command){
-        return hardwareService.save(command)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Hardware with the same code already exists"));
+            return hardwareService.save(command)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Hardware with the same code already exists"));
     }
 
     //@Secured("ROLE_ADMIN")
