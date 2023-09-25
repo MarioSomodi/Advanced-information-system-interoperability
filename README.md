@@ -1,2 +1,2 @@
-# Advanced-information-system-interoperability
-Programming exercises I had in a subject called "Advanced information system interoperability" at Algebra University College.
+# Advanced information system interoperability
+Learned how to create ui applications using java fx.
